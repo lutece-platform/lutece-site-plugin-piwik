@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Plugin PIWIK</title>
+    </properties>
+    <body>
+        <section name="Plugin PIWIK">
+            
+            <p>
+                <img src="images/piwik.png" />
+            </p>
+            
+            <subsection name="Introduction">
+                <p>Ce plugin vous permet d'ajouter un tracker PIWIK dans toutes les pages du site </p>
+                <p>Il offre également une interface de consultation du tableau de bord PIWIK </p>
+            </subsection>
+            <subsection name="Configuration">
+                <p>
+                    Définir dans les Propriétés du site :
+                    <ul>
+                        <li>L'ID du site</li>
+                        <li>L'URL du serveur PIWIK</li>
+                    </ul>
+                </p>
+            </subsection>
+        </section>
+    </body>
+</document>
+
