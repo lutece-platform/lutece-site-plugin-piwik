@@ -19,8 +19,18 @@
                     Définir dans les Propriétés du site :
                     <ul>
                         <li>L'ID du site</li>
-                        <li>L'URL du serveur PIWIK</li>
+                        <li>L'URL du serveur HTTP PIWIK</li>
+                        <li>L'URL du serveur HTTPS PIWIK</li>
                     </ul>
+                </p>
+                <p>
+                    Ajouter le signet PIWIK dans un template du site, typiquement <b>page_frameset.html</b> 
+                </p>
+                <p>
+                    <pre>
+&lt;!-- Piwik include --&gt;
+${piwik}                        
+                    </pre>                    
                 </p>
             </subsection>
         </section>

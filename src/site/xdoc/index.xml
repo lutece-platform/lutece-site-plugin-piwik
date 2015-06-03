@@ -19,8 +19,18 @@
                     Define in Site properties :
                     <ul>
                         <li>The site ID</li>
-                        <li>The PIWIK server URL</li>
+                        <li>The PIWIK server HTTP URL</li>
+                        <li>The PIWIK server HTTPS URL</li>
                     </ul>
+                </p>
+                <p>
+                    Add the PIWIK bookmark into a site template, typically <b>page_frameset.html</b> 
+                </p>
+                <p>
+                    <pre>
+&lt;!-- Piwik include --&gt;
+${piwik}                        
+                    </pre>                    
                 </p>
             </subsection>
         </section>

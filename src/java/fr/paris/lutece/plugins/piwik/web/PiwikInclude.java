@@ -53,12 +53,14 @@ import javax.servlet.http.HttpServletRequest;
 public class PiwikInclude implements PageInclude
 {
     private static final String KEY_SITE_ID = "piwik.site_property.site.id";
-    private static final String KEY_SERVER_URL = "piwik.site_property.server.url";
-    private static final String MARK_PIWIK = "piwik_analytics";
+    private static final String KEY_SERVER_HTTP_URL = "piwik.site_property.server.http.url";
+    private static final String KEY_SERVER_HTTPS_URL = "piwik.site_property.server.https.url";
+    private static final String MARK_PIWIK = "piwik";
     private static final String PLUGIN_NAME = "piwik";
     private static final String TEMPLATE_PIWIK_INCLUDE = "skin/plugins/piwik/piwik_analytics.html";
     private static final String MARK_SITE_ID = "site_id";
-    private static final String MARK_SERVER_URL = "server_url";
+    private static final String MARK_SERVER_HTTP_URL = "server_http_url";
+    private static final String MARK_SERVER_HTTPS_URL = "server_https_url";
     private Plugin _plugin;
 
     /**
@@ -77,9 +79,11 @@ public class PiwikInclude implements PageInclude
         {
             Map<String, Object> model = new HashMap<String, Object>(  );
             String strSiteId = DatastoreService.getDataValue( KEY_SITE_ID, "<no site id provided>" );
-            String strServerUrl = DatastoreService.getDataValue( KEY_SERVER_URL, "<no server url provided>" );
+            String strServerHttpUrl = DatastoreService.getDataValue( KEY_SERVER_HTTP_URL, "<no server http url provided>" );
+            String strServerHttpsUrl = DatastoreService.getDataValue( KEY_SERVER_HTTPS_URL, "<no server https url provided>" );
             model.put( MARK_SITE_ID, strSiteId );
-            model.put( MARK_SERVER_URL, strServerUrl );
+            model.put( MARK_SERVER_HTTP_URL, strServerHttpUrl );
+            model.put( MARK_SERVER_HTTPS_URL, strServerHttpsUrl );
 
             HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_PIWIK_INCLUDE, request.getLocale(  ), model );
 
