@@ -16,6 +16,22 @@ Define in Site properties :
 * The site ID
 * The PIWIK server HTTP URL
 * The PIWIK server HTTPS URL
+* The widget Authentication Token (optionnal)
+
+
+Initial default values can be configured in the **piwik.properties** as follow :
+
+
+```
+
+# piwik properties file
+
+piwik.default.site.id=15
+piwik.default.server.http.url=http://www.example.com/piwik/
+piwik.default.server.https.url=https://www.example.com/piwik/
+piwik.default.widget.auth.token=6b34579abd8b74a12b87a809ef060185                    
+                    
+```
 
 
 Add the PIWIK bookmark into a site template, typically **page_frameset.html** 

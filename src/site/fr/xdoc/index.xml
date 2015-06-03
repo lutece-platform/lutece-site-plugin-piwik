@@ -21,8 +21,23 @@
                         <li>L'ID du site</li>
                         <li>L'URL du serveur HTTP PIWIK</li>
                         <li>L'URL du serveur HTTPS PIWIK</li>
+                        <li>The widget Authentication Token (optionnal)</li>
                     </ul>
                 </p>
+                <p>
+                    Les valeurs initiales peuvent être configurées dans le fichier
+                    <b>piwik.properties</b> comme suit :
+                </p>
+                <p>
+                    <pre>
+# piwik properties file
+
+piwik.default.site.id=15
+piwik.default.server.http.url=http://www.example.com/piwik/
+piwik.default.server.https.url=https://www.example.com/piwik/
+piwik.default.widget.auth.token=6b34579abd8b74a12b87a809ef060185                    
+                    </pre>  
+                </p>              
                 <p>
                     Ajouter le signet PIWIK dans un template du site, typiquement <b>page_frameset.html</b> 
                 </p>
