@@ -39,6 +39,7 @@ import fr.paris.lutece.portal.service.includes.PageInclude;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
 import java.util.HashMap;
@@ -52,6 +53,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PiwikInclude implements PageInclude
 {
+    private static final String PROPERTY_DEFAULT_SITE_ID = "piwik.default.site.id";
+    private static final String PROPERTY_DEFAULT_SERVER_HTTP_URL = "piwik.default.server.http.url";
+    private static final String PROPERTY_DEFAULT_SERVER_HTTPS_URL = "piwik.default.server.https.url";
     private static final String KEY_SITE_ID = "piwik.site_property.site.id";
     private static final String KEY_SERVER_HTTP_URL = "piwik.site_property.server.http.url";
     private static final String KEY_SERVER_HTTPS_URL = "piwik.site_property.server.https.url";
@@ -78,9 +82,15 @@ public class PiwikInclude implements PageInclude
         if ( ( _plugin != null ) && ( request != null ) )
         {
             Map<String, Object> model = new HashMap<String, Object>(  );
-            String strSiteId = DatastoreService.getDataValue( KEY_SITE_ID, "<no site id provided>" );
-            String strServerHttpUrl = DatastoreService.getDataValue( KEY_SERVER_HTTP_URL, "<no server http url provided>" );
-            String strServerHttpsUrl = DatastoreService.getDataValue( KEY_SERVER_HTTPS_URL, "<no server https url provided>" );
+            String strDefaultSiteId = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SITE_ID,
+                    "<no site id provided>" );
+            String strDefaultServerHttpUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTP_URL,
+                    "<no server http url provided>" );
+            String strDefaultServerHttpsUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTPS_URL,
+                    "<no server https url provided>" );
+            String strSiteId = DatastoreService.getDataValue( KEY_SITE_ID, strDefaultSiteId );
+            String strServerHttpUrl = DatastoreService.getDataValue( KEY_SERVER_HTTP_URL, strDefaultServerHttpUrl );
+            String strServerHttpsUrl = DatastoreService.getDataValue( KEY_SERVER_HTTPS_URL, strDefaultServerHttpsUrl );
             model.put( MARK_SITE_ID, strSiteId );
             model.put( MARK_SERVER_HTTP_URL, strServerHttpUrl );
             model.put( MARK_SERVER_HTTPS_URL, strServerHttpsUrl );
