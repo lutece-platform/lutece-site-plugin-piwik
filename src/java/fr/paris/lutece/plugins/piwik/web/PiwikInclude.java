@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2015, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,16 +56,24 @@ public class PiwikInclude implements PageInclude
     private static final String PROPERTY_DEFAULT_SITE_ID = "piwik.default.site.id";
     private static final String PROPERTY_DEFAULT_SERVER_HTTP_URL = "piwik.default.server.http.url";
     private static final String PROPERTY_DEFAULT_SERVER_HTTPS_URL = "piwik.default.server.https.url";
-    private static final String KEY_SITE_ID = "piwik.site_property.site.id";
-    private static final String KEY_SERVER_HTTP_URL = "piwik.site_property.server.http.url";
-    private static final String KEY_SERVER_HTTPS_URL = "piwik.site_property.server.https.url";
+    private static final String PROPERTY_DEFAULT_AUTH_TOKEN = "piwik.default.widget.auth.token";
+    private static final String DSKEY_SITE_ID = "piwik.site_property.site.id";
+    private static final String DSKEY_SERVER_HTTP_URL = "piwik.site_property.server.http.url";
+    private static final String DSKEY_SERVER_HTTPS_URL = "piwik.site_property.server.https.url";
+    private static final String DSKEY_AUTH_TOKEN = "piwik.site_property.widget.auth.token";
     private static final String MARK_PIWIK = "piwik";
     private static final String PLUGIN_NAME = "piwik";
     private static final String TEMPLATE_PIWIK_INCLUDE = "skin/plugins/piwik/piwik_analytics.html";
     private static final String MARK_SITE_ID = "site_id";
     private static final String MARK_SERVER_HTTP_URL = "server_http_url";
     private static final String MARK_SERVER_HTTPS_URL = "server_https_url";
-    private Plugin _plugin;
+    
+    private static Plugin _plugin;
+    private static boolean _bInit;
+    private static String _strDefaultSiteId;
+    private static String _strDefaultServerHttpUrl;
+    private static String _strDefaultServerHttpsUrl;
+    private static String _strDefaultAuthToken;
 
     /**
      * Substitue specific Freemarker markers in the page template.
@@ -78,19 +86,18 @@ public class PiwikInclude implements PageInclude
     public void fillTemplate( Map<String, Object> rootModel, PageData data, int nMode, HttpServletRequest request )
     {
         _plugin = PluginService.getPlugin( PLUGIN_NAME );
+        
+        if( !_bInit )
+        {
+            initConfig();
+        }
 
         if ( ( _plugin != null ) && ( request != null ) )
         {
             Map<String, Object> model = new HashMap<String, Object>(  );
-            String strDefaultSiteId = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SITE_ID,
-                    "<no site id provided>" );
-            String strDefaultServerHttpUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTP_URL,
-                    "<no server http url provided>" );
-            String strDefaultServerHttpsUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTPS_URL,
-                    "<no server https url provided>" );
-            String strSiteId = DatastoreService.getDataValue( KEY_SITE_ID, strDefaultSiteId );
-            String strServerHttpUrl = DatastoreService.getDataValue( KEY_SERVER_HTTP_URL, strDefaultServerHttpUrl );
-            String strServerHttpsUrl = DatastoreService.getDataValue( KEY_SERVER_HTTPS_URL, strDefaultServerHttpsUrl );
+            String strSiteId = DatastoreService.getDataValue( DSKEY_SITE_ID, _strDefaultSiteId );
+            String strServerHttpUrl = DatastoreService.getDataValue( DSKEY_SERVER_HTTP_URL, _strDefaultServerHttpUrl );
+            String strServerHttpsUrl = DatastoreService.getDataValue( DSKEY_SERVER_HTTPS_URL, _strDefaultServerHttpsUrl );
             model.put( MARK_SITE_ID, strSiteId );
             model.put( MARK_SERVER_HTTP_URL, strServerHttpUrl );
             model.put( MARK_SERVER_HTTPS_URL, strServerHttpsUrl );
@@ -102,6 +109,37 @@ public class PiwikInclude implements PageInclude
         else
         {
             rootModel.put( MARK_PIWIK, "" );
+        }
+    }
+
+    /**
+     * Initialize config
+     */
+    private synchronized void initConfig()
+    {
+        _strDefaultSiteId = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SITE_ID,
+                    "<no site id provided>" );
+        _strDefaultServerHttpUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTP_URL,
+                    "<no server http url provided>" );
+        _strDefaultServerHttpsUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTPS_URL,
+                    "<no server https url provided>" );
+        _strDefaultAuthToken = AppPropertiesService.getProperty( PROPERTY_DEFAULT_AUTH_TOKEN, "" );
+        
+        if( ! DatastoreService.existsKey( DSKEY_SITE_ID ))
+        {
+            DatastoreService.setDataValue( DSKEY_SITE_ID, _strDefaultSiteId );
+        }
+        if( ! DatastoreService.existsKey( DSKEY_SERVER_HTTP_URL ))
+        {
+            DatastoreService.setDataValue( DSKEY_SERVER_HTTP_URL, _strDefaultServerHttpUrl );
+        }
+        if( ! DatastoreService.existsKey( DSKEY_SERVER_HTTPS_URL ))
+        {
+            DatastoreService.setDataValue( DSKEY_SERVER_HTTPS_URL, _strDefaultServerHttpsUrl );
+        }
+        if( ! DatastoreService.existsKey( DSKEY_AUTH_TOKEN ))
+        {
+            DatastoreService.setDataValue( DSKEY_AUTH_TOKEN, _strDefaultAuthToken );
         }
     }
 }
