@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>plugin-piwik</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Lutece piwik plugin</name>
 
     <repositories>
@@ -34,13 +34,14 @@
     <properties>
         <componentName>piwik</componentName>
         <jiraProjectName>PIWIK</jiraProjectName>
-        <jiraComponentId></jiraComponentId>
+        <jiraComponentId />
     </properties>
     
     <scm>
         <connection>scm:git:https://github.com/lutece-platform/lutece-site-plugin-piwik.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-site-plugin-piwik.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-site-plugin-piwik.git</url>
-    </scm>
+      <tag>lutece-site-plugin-piwik-1.0.0</tag>
+  </scm>
     
 </project>
