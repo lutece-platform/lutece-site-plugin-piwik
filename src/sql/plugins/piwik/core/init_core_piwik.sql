@@ -22,4 +22,5 @@ INSERT INTO core_user_right (id_right,id_user) VALUES ('PIWIK_MANAGEMENT',1);
 INSERT INTO core_datastore VALUES ('piwik.site_property.site.id', '<Your site ID>');
 INSERT INTO core_datastore VALUES ('piwik.site_property.server.http.url', '<Your Piwik server HTTP URL>');
 INSERT INTO core_datastore VALUES ('piwik.site_property.server.https.url', '<Your Piwik server HTTPS URL>');
+INSERT INTO core_datastore VALUES ('piwik.site_property.widget.auth.token', '');
 

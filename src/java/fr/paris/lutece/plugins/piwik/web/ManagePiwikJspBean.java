@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.piwik.web;
 
+import fr.paris.lutece.portal.service.datastore.DatastoreService;
 import fr.paris.lutece.portal.util.mvc.admin.MVCAdminJspBean;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
@@ -54,7 +55,10 @@ public class ManagePiwikJspBean extends MVCAdminJspBean
     // templates
     private static final String TEMPLATE_PIWIK_DASHBOARD = "/admin/plugins/piwik/piwik.html";
     private static final String PROPERTY_PAGE_TITLE_PIWIK_DASHBOARD = "piwik.dashboard.pageTitle";
+    private static final String DSKEY_AUTH_TOKEN  = "site_property.widget.auth.token";
     private static final String VIEW_PIWIK_HOME = "home";
+    private static final String MARK_AUTH_TOKEN = "auth_token";
+    
 
     /**
      * Return the PiwikDashboard page
@@ -64,8 +68,12 @@ public class ManagePiwikJspBean extends MVCAdminJspBean
     @View( value = VIEW_PIWIK_HOME, defaultView = true )
     public String getPiwikDashboard( HttpServletRequest request )
     {
+        String strAuthToken = DatastoreService.getDataValue( DSKEY_AUTH_TOKEN, "" );
         Map<String, Object> model = getModel(  );
-
+        if( ! strAuthToken.trim().equals( "" ) )
+        {
+            model.put( MARK_AUTH_TOKEN , strAuthToken );
+        }
         return getPage( PROPERTY_PAGE_TITLE_PIWIK_DASHBOARD, TEMPLATE_PIWIK_DASHBOARD, model );
     }
 }
