@@ -14,7 +14,19 @@ It provides also an embeded PIWIK dashboard in the Back Office
 Define in Site properties :
  
 * The site ID
-* The PIWIK server URL
+* The PIWIK server HTTP URL
+* The PIWIK server HTTPS URL
+
+
+Add the PIWIK bookmark into a site template, typically **page_frameset.html** 
+
+
+```
+
+<!-- Piwik include -->
+${piwik}                        
+                    
+```
 
 
 
