@@ -55,7 +55,7 @@ public class ManagePiwikJspBean extends MVCAdminJspBean
     // templates
     private static final String TEMPLATE_PIWIK_DASHBOARD = "/admin/plugins/piwik/piwik.html";
     private static final String PROPERTY_PAGE_TITLE_PIWIK_DASHBOARD = "piwik.dashboard.pageTitle";
-    private static final String DSKEY_AUTH_TOKEN = "site_property.widget.auth.token";
+    private static final String DSKEY_AUTH_TOKEN = "piwik.site_property.widget.auth.token";
     private static final String VIEW_PIWIK_HOME = "home";
     private static final String MARK_AUTH_TOKEN = "auth_token";
 
