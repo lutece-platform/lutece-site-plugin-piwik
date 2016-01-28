@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.piwik.web;
 import fr.paris.lutece.portal.service.content.PageData;
 import fr.paris.lutece.portal.service.datastore.DatastoreService;
 import fr.paris.lutece.portal.service.includes.PageInclude;
-import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -68,15 +67,45 @@ public class PiwikInclude implements PageInclude
     private static final String MARK_SERVER_HTTP_URL = "server_http_url";
     private static final String MARK_SERVER_HTTPS_URL = "server_https_url";
     
-    private static Plugin _plugin;
-    private static boolean _bInit;
-    private static String _strDefaultSiteId;
-    private static String _strDefaultServerHttpUrl;
-    private static String _strDefaultServerHttpsUrl;
-    private static String _strDefaultAuthToken;
+    private final String _strDefaultSiteId;
+    private final String _strDefaultServerHttpUrl;
+    private final String _strDefaultServerHttpsUrl;
+    private final String _strDefaultAuthToken;
 
     /**
-     * Substitue specific Freemarker markers in the page template.
+     * Constructor
+     */
+    public PiwikInclude(  )
+    {
+        _strDefaultSiteId = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SITE_ID,
+                "<no site id provided>" );
+        _strDefaultServerHttpUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTP_URL,
+                    "<no server http url provided>" );
+        _strDefaultServerHttpsUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTPS_URL,
+                    "<no server https url provided>" );
+        _strDefaultAuthToken = AppPropertiesService.getProperty( PROPERTY_DEFAULT_AUTH_TOKEN, "" );
+
+        // initialize the datastore if it has not yet been done
+        if( ! DatastoreService.existsKey( DSKEY_SITE_ID ) )
+        {
+            DatastoreService.setDataValue( DSKEY_SITE_ID, _strDefaultSiteId );
+        }
+        if( ! DatastoreService.existsKey( DSKEY_SERVER_HTTP_URL ) )
+        {
+            DatastoreService.setDataValue( DSKEY_SERVER_HTTP_URL, _strDefaultServerHttpUrl );
+        }
+        if( ! DatastoreService.existsKey( DSKEY_SERVER_HTTPS_URL ) )
+        {
+            DatastoreService.setDataValue( DSKEY_SERVER_HTTPS_URL, _strDefaultServerHttpsUrl );
+        }
+        if( ! DatastoreService.existsKey( DSKEY_AUTH_TOKEN ) )
+        {
+            DatastoreService.setDataValue( DSKEY_AUTH_TOKEN, _strDefaultAuthToken );
+        }
+    }
+
+    /**
+     * Substitute specific Freemarker markers in the page template.
      * @param rootModel the HashMap containing markers to substitute
      * @param data A PageData object containing applications data
      * @param nMode The current mode
@@ -85,14 +114,7 @@ public class PiwikInclude implements PageInclude
     @Override
     public void fillTemplate( Map<String, Object> rootModel, PageData data, int nMode, HttpServletRequest request )
     {
-        _plugin = PluginService.getPlugin( PLUGIN_NAME );
-        
-        if( !_bInit )
-        {
-            initConfig();
-        }
-
-        if ( ( _plugin != null ) && ( request != null ) )
+        if ( PluginService.isPluginEnable( PLUGIN_NAME ) && ( request != null ) )
         {
             Map<String, Object> model = new HashMap<String, Object>(  );
             String strSiteId = DatastoreService.getDataValue( DSKEY_SITE_ID, _strDefaultSiteId );
@@ -112,34 +134,4 @@ public class PiwikInclude implements PageInclude
         }
     }
 
-    /**
-     * Initialize config
-     */
-    private synchronized void initConfig()
-    {
-        _strDefaultSiteId = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SITE_ID,
-                    "<no site id provided>" );
-        _strDefaultServerHttpUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTP_URL,
-                    "<no server http url provided>" );
-        _strDefaultServerHttpsUrl = AppPropertiesService.getProperty( PROPERTY_DEFAULT_SERVER_HTTPS_URL,
-                    "<no server https url provided>" );
-        _strDefaultAuthToken = AppPropertiesService.getProperty( PROPERTY_DEFAULT_AUTH_TOKEN, "" );
-        
-        if( ! DatastoreService.existsKey( DSKEY_SITE_ID ))
-        {
-            DatastoreService.setDataValue( DSKEY_SITE_ID, _strDefaultSiteId );
-        }
-        if( ! DatastoreService.existsKey( DSKEY_SERVER_HTTP_URL ))
-        {
-            DatastoreService.setDataValue( DSKEY_SERVER_HTTP_URL, _strDefaultServerHttpUrl );
-        }
-        if( ! DatastoreService.existsKey( DSKEY_SERVER_HTTPS_URL ))
-        {
-            DatastoreService.setDataValue( DSKEY_SERVER_HTTPS_URL, _strDefaultServerHttpsUrl );
-        }
-        if( ! DatastoreService.existsKey( DSKEY_AUTH_TOKEN ))
-        {
-            DatastoreService.setDataValue( DSKEY_AUTH_TOKEN, _strDefaultAuthToken );
-        }
-    }
 }
