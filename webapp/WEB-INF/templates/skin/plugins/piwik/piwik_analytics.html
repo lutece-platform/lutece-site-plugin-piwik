@@ -21,6 +21,35 @@
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript'; g.defer=true; g.async=true; g.src=u+'piwik.js';
     s.parentNode.insertBefore(g,s); })();
+	
+	/* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Track button "btn-piwik" click action                                                                                                                           */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    /* Add "btn-piwik" class to the HTML element you want to track                                                                                                     */
+    /* Add data-pw-cat="AnyCategoryYouWant" to send custom info if not a "Download" category is set                                                                    */
+    /* Add data-pw-action="AnyActionYouWant" to give an action name, if not the HTML element type is <set>                                                             */
+    /* Add data-pw-name="AnyTitleYouWant" to give a name, if not the page title is given                                                                               */
+    /* -- Example --                                                                                                                                                   */
+    /* <button class="btn btn-default btn-piwik" data-pw-cat="Create Account" data-pw-action="Create" [data-pw-name="Validation button"] type="submit">Send</button>   */
+    /* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+    if ( $(".btn-piwik").length > 0 ){
+       $(".btn-piwik").click( function(e){
+        var pwCat=document.title, pwAction=$(this).text(), pwName='';
+        if ( $(this).attr("data-pw-cat") != undefined ){
+          pwCat = $(this).attr("data-pw-cat");
+        }
+        if ( $(this).attr("data-pw-action") != undefined){
+          pwAction = $(this).attr("data-pw-action");
+        }
+        if ( $(this).attr("data-pw-name") != undefined){
+          pwName = $(this).attr("data-pw-name");
+          _paq.push(['trackEvent', pwCat , pwAction, pwName ])
+        } else {
+          _paq.push(['trackEvent', pwCat , pwAction ])
+        }
+     })
+    }
+	
 </script>
 <noscript><p><img src="${server_https_url}piwik.php?idsite=${site_id}" style="border:0;" alt="" /></p></noscript>
 <!-- End Piwik Code -->
